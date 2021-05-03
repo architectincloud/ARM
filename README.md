@@ -8,7 +8,7 @@ To run this enter in your CLI following code:
 
 File azuredeploy.json contains template with examples of usage parameters, functions, different resources.
 
-To run this enter in your CLI following code:
+To run this enter in your CLI following deployment command:
 ```
 utworzenie zmiennej 
 $templateFile="azuredeploy.json" 
