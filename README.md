@@ -11,8 +11,8 @@ To run this enter in your CLI following code:
 
 ```az deployment sub create --name infraDeploy --location centralus --template-file arm-set-enviroment-with-cm.json --parameters arm-set-enviroment-with-cm.parameters.json```
 
-```--name //is name of deployment (see at the subscription deployments tab)```
+```--name //is the name of deployment (see at the subscription deployments tab)```
 
-Type in the promt form envType (dev, tst, uat, prd) and the name of resource group.
+Type in the prompt form envType (dev, tst, uat, prd) and the name of resource group.
 
 # Other ARM commands samples are in arm-templates.json file.
