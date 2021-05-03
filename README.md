@@ -5,3 +5,5 @@ Documentation: https://docs.microsoft.com/en-us/azure/azure-resource-manager/tem
 
 To run this enter in your CLI following code:
 ```az deployment sub create --name infraDeploy --location centralus  --template-file arm-rg.json```
+
+File azuredeploy.json contains template with examples of usage parameters, functions, different resources,
