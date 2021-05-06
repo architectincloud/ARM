@@ -2,35 +2,46 @@
   "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "envType": {
+      "type": "string",
+      //"defaultValue": "dev",
+      "allowedValues": ["dev","tst","uat","prd"]
+    },
     "rgName": {
       "type": "string"
     },
     "rgLocation": {
       "type": "string"
     },
-    "storagePrefix": {
+    "storageSKU": {
       "type": "string",
-      "maxLength": 11
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS"
+      ]
     }
   },
   "variables": {
-    "storageName": "[concat(parameters('storagePrefix'), uniqueString(subscription().id, parameters('rgName')))]"
+    "storageName": "[concat('storage', uniqueString(subscription().id, parameters('rgName')))]",
+    "fullRgName": "[concat('rg-',parameters('envType'),'-',parameters('rgName'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2020-10-01",
-      "name": "[parameters('rgName')]",
+      "name": "[variables('fullRgName')]",
       "location": "[parameters('rgLocation')]",
+      "tags": {"Enviroment":"[parameters('envType')]"},
       "properties": {}
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
-      "name": "storageDeployment",
-      "resourceGroup": "[parameters('rgName')]",
+      "name": "EnviromentDeployment",
+      "resourceGroup": "[variables('fullRgName')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+        "[resourceId('Microsoft.Resources/resourceGroups/', variables('fullRgName') )]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -45,8 +56,9 @@
               "apiVersion": "2019-06-01",
               "name": "[variables('storageName')]",
               "location": "[parameters('rgLocation')]",
+              "tags": {"Enviroment":"[parameters('envType')]"},
               "sku": {
-                "name": "Standard_LRS"
+                "name": "[parameters('storageSKU')]"
               },
               "kind": "StorageV2"
             }
